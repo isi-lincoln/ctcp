@@ -1,5 +1,6 @@
 VPATH	=	src
 BINDIR 	=	bin
+OBJDIR  =       obj
 LOGDIR	=	logs
 FIGDIR	=	figs
 HERE	=	$(shell pwd)
@@ -87,13 +88,13 @@ ifeq ($(PROF),1)
 endif
 
 # Rule for compiling c files.
-$(BINDIR)/%.o : %.c .buildmode Makefile
+$(OBJDIR)/%.o : %.c .buildmode Makefile
 	$(ECHO) "compiling $<"
 	$(MKDIR) -p $(dir $@)
 	$(CC) $(CFLAGS) -o $@ $<
 
 # Rule for compiling c++ files.
-$(BINDIR)/%.o: %.cpp
+$(OBJDIR)/%.o: %.cpp
 	$(ECHO) "compiling $<"
 	$(MKDIR) -p $(dir $@)
 	$(CXX) $(CXXFLAGS) -o $@ $<
@@ -106,12 +107,13 @@ ifneq ($(OLDMODE),$(NEWMODE))
 endif
 
 .PHONY: all
-all: proxy_local proxy_remote nftpServer nftpClient
+all: $(BINDIR)/proxy_local $(BINDIR)/proxy_remote $(BINDIR)/nftpServer $(BINDIR)/nftpClient
 
 .PHONY: clean
 clean:
 	$(ECHO) Cleaning...
 	$(RM) -rf $(BINDIR)
+	$(RM) -rf $(OBJDIR)
 	$(RM) -rf srvctcp clictcp
 	$(RM) -rf demoServer demoClient
 	$(RM) -rf proxy_local proxy_remote
@@ -123,57 +125,57 @@ distclean: clean
 .PHONY: remake
 remake: clean proxy
 
-clictcp: $(BINDIR)/clictcp.o $(BINDIR)/libUtil.a .buildmode Makefile
+$(BINDIR)/clictcp: $(OBJDIR)/clictcp.o $(OBJDIR)/libUtil.a .buildmode Makefile
 	$(ECHO) "linking $@"
 	$(MKDIR) -p $(dir $@)
-	$(CC) -o $@ $(BINDIR)/clictcp.o $(BINDIR)/libUtil.a $(LDFLAGS)
+	$(CC) -o $@ $(OBJDIR)/clictcp.o $(OBJDIR)/libUtil.a $(LDFLAGS)
 
-srvctcp: $(BINDIR)/srvctcp.o $(BINDIR)/libUtil.a .buildmode Makefile
+$(BINDIR)/srvctcp: $(OBJDIR)/srvctcp.o $(OBJDIR)/libUtil.a .buildmode Makefile
 	$(ECHO) "linking $@"
 	$(MKDIR) -p $(dir $@)
-	$(CC) -o $@ $(BINDIR)/srvctcp.o $(BINDIR)/libUtil.a $(LDFLAGS) 
+	$(CC) -o $@ $(OBJDIR)/srvctcp.o $(OBJDIR)/libUtil.a $(LDFLAGS) 
 
 # Rule to make the libUtil library
-$(BINDIR)/libUtil.a: $(BINDIR)/util.o $(BINDIR)/md5.o $(BINDIR)/qbuffer.o $(BINDIR)/thr_pool.o $(BINDIR)/fifo.o 
+$(OBJDIR)/libUtil.a: $(OBJDIR)/util.o $(OBJDIR)/md5.o $(OBJDIR)/qbuffer.o $(OBJDIR)/thr_pool.o $(OBJDIR)/fifo.o 
 	$(ECHO) "building  $@"
 	$(MKDIR) -p $(dir $@)
-	$(AR) $(ARFLAGS) $@ $(BINDIR)/util.o $(BINDIR)/md5.o $(BINDIR)/qbuffer.o $(BINDIR)/thr_pool.o $(BINDIR)/fifo.o  
+	$(AR) $(ARFLAGS) $@ $(OBJDIR)/util.o $(OBJDIR)/md5.o $(OBJDIR)/qbuffer.o $(OBJDIR)/thr_pool.o $(OBJDIR)/fifo.o  
 
-demoServer: $(BINDIR)/demoServer.o .buildmode Makefile
+$(BINDIR)/demoServer: $(OBJDIR)/demoServer.o .buildmode Makefile
 	$(ECHO) "linking $@"
 	$(MKDIR) -p $(dir $@)
 	$(CC) -o $@ $< $(LDFLAGS) 
 
-demoClient: $(BINDIR)/demoClient.o .buildmode Makefile
+$(BINDIR)/demoClient: $(OBJDIR)/demoClient.o .buildmode Makefile
 	$(ECHO) "linking $@"
 	$(MKDIR) -p $(dir $@)
 	$(CC) -o $@ $< $(LDFLAGS) -lreadline
 
-proxy_local: $(BINDIR)/proxy_local.o $(BINDIR)/child_local.o  $(BINDIR)/misc_local.o $(BINDIR)/up_proxy.o $(BINDIR)/error.o $(BINDIR)/clictcp.o $(BINDIR)/libUtil.a .buildmode Makefile
+$(BINDIR)/proxy_local: $(OBJDIR)/proxy_local.o $(OBJDIR)/child_local.o  $(OBJDIR)/misc_local.o $(OBJDIR)/up_proxy.o $(OBJDIR)/error.o $(OBJDIR)/clictcp.o $(OBJDIR)/libUtil.a .buildmode Makefile
 	$(ECHO) "linking $@"
 	$(MKDIR) -p $(dir $@)
-	$(CC) -o $@ $(BINDIR)/proxy_local.o $(BINDIR)/child_local.o  $(BINDIR)/misc_local.o $(BINDIR)/up_proxy.o $(BINDIR)/error.o $(BINDIR)/clictcp.o $(BINDIR)/libUtil.a $(LDFLAGS) 
+	$(CC) -o $@ $(OBJDIR)/proxy_local.o $(OBJDIR)/child_local.o  $(OBJDIR)/misc_local.o $(OBJDIR)/up_proxy.o $(OBJDIR)/error.o $(OBJDIR)/clictcp.o $(OBJDIR)/libUtil.a $(LDFLAGS) 
 
-proxy_remote: $(BINDIR)/proxy_remote.o $(BINDIR)/child_remote.o  $(BINDIR)/misc_remote.o $(BINDIR)/up_proxy.o $(BINDIR)/error.o $(BINDIR)/srvctcp.o $(BINDIR)/libUtil.a .buildmode Makefile
+$(BINDIR)/proxy_remote: $(OBJDIR)/proxy_remote.o $(OBJDIR)/child_remote.o  $(OBJDIR)/misc_remote.o $(OBJDIR)/up_proxy.o $(OBJDIR)/error.o $(OBJDIR)/srvctcp.o $(OBJDIR)/libUtil.a .buildmode Makefile
 	$(ECHO) "linking $@"
 	$(MKDIR) -p $(dir $@)
-	$(CC) -o $@ $(BINDIR)/proxy_remote.o $(BINDIR)/child_remote.o  $(BINDIR)/misc_remote.o $(BINDIR)/up_proxy.o $(BINDIR)/error.o $(BINDIR)/srvctcp.o $(BINDIR)/libUtil.a $(LDFLAGS)
+	$(CC) -o $@ $(OBJDIR)/proxy_remote.o $(OBJDIR)/child_remote.o  $(OBJDIR)/misc_remote.o $(OBJDIR)/up_proxy.o $(OBJDIR)/error.o $(OBJDIR)/srvctcp.o $(OBJDIR)/libUtil.a $(LDFLAGS)
 
-nftpServer: $(BINDIR)/nftpServer.o $(BINDIR)/srvctcp.o $(BINDIR)/libUtil.a .buildmode Makefile
+$(BINDIR)/nftpServer: $(OBJDIR)/nftpServer.o $(OBJDIR)/srvctcp.o $(OBJDIR)/libUtil.a .buildmode Makefile
 	$(ECHO) "linking $@"
 	$(MKDIR) -p $(dir $@)
-	$(CC) -o $@ $(BINDIR)/nftpServer.o $(BINDIR)/srvctcp.o $(BINDIR)/libUtil.a $(LDFLAGS)
+	$(CC) -o $@ $(OBJDIR)/nftpServer.o $(OBJDIR)/srvctcp.o $(OBJDIR)/libUtil.a $(LDFLAGS)
 
-nftpClient: $(BINDIR)/nftpClient.o $(BINDIR)/clictcp.o $(BINDIR)/libUtil.a .buildmode Makefile
+$(BINDIR)/nftpClient: $(OBJDIR)/nftpClient.o $(OBJDIR)/clictcp.o $(OBJDIR)/libUtil.a .buildmode Makefile
 	$(ECHO) "linking $@"
 	$(MKDIR) -p $(dir $@)
-	$(CC) -o $@ $(BINDIR)/nftpClient.o $(BINDIR)/clictcp.o $(BINDIR)/libUtil.a $(LDFLAGS) 
+	$(CC) -o $@ $(OBJDIR)/nftpClient.o $(OBJDIR)/clictcp.o $(OBJDIR)/libUtil.a $(LDFLAGS) 
 
 .PHONY: proxy
-proxy: proxy_local proxy_remote
+proxy: $(BINDIR)/proxy_local $(BINDIR)/proxy_remote
 
 .PHONY: nftp
-nftp: nftpServer nftpClient
+nftp: $(BINDIR)/nftpServer $(BINDIR)/nftpClient
 
 .PHONY: install
 install: all
@@ -181,6 +183,7 @@ install: all
 	install proxy_local proxy_remote nftpServer nftpClient $(DESTDIR)/usr/bin 
 	install -d $(DESTDIR)/etc/ctcp/
 	install -c -m 644 config/proxy_local.conf config/proxy_remote.conf $(DESTDIR)/etc/ctcp/
+
 # Uncomment to debug the Makefile
 #OLD_SHELL := $(SHELL)
 #SHELL = $(warning [$@ ($^) ($?)]) $(OLD_SHELL)
