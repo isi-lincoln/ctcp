@@ -26,8 +26,8 @@ THRIFT	=	/usr/local/bin/thrift
 AR	=	$(AT)ar
 ARFLAGS	=	rcs
 
-#CC             =       $(AT) gcc
-#CXX             =      $(AT) g++
+CC             =       clang
+CXX             =      clang++
 FPIC		=	-fPIC
 INCLUDES	=	-I$(HERE) -I. -I$(SRCDIR)
 CFLAGS	 	= 	-c -g -Wall $(INCLUDES)
@@ -51,6 +51,7 @@ OPT_CXXFLAGS		=	$(COMMON_CXXFLAGS) -DNDEBUG \
 				$(OPTIMIZATION_FLAGS) -fno-omit-frame-pointer
 
 COMMON_LDFLAGS		=	-g $(FPIC) -Wl -lm -lpthread
+#COMMON_LDFLAGS		=	-g $(FPIC) -W -lm -lpthread
 DBG_LDFLAGS		=	$(COMMON_LDFLAGS) --eh-frame-hdr
 OPT_LDFLAGS		=	$(COMMON_LDFLAGS) -O3 -fno-omit-frame-pointer
 

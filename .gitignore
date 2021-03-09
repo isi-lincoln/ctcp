@@ -5,3 +5,10 @@
 .buildmode
 clictcp
 srvctcp
+
+# binaries
+bin/
+nftpClient
+nftpServer
+proxy_local
+proxy_remote
