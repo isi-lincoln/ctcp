@@ -2,11 +2,14 @@
 *.pyc
 *.avi
 *.jpg
+*.swp
 .buildmode
+
 clictcp
 srvctcp
 
 # binaries
+obj/
 bin/
 nftpClient
 nftpServer

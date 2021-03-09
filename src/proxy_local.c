@@ -35,8 +35,6 @@
 #include "clictcp.h"
 #include "util.h"
 
-
-
 int  socks_port        = 1080;
 //char lease_file[256]   = "client.lease";
 char* lease_file       = NULL;

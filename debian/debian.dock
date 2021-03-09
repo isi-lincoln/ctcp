@@ -1,0 +1,12 @@
+FROM debian:bullseye
+
+RUN apt-get update
+RUN apt-get install -y devscripts build-essential clang
+
+COPY ./debian /ctcp/debian
+WORKDIR /ctcp
+
+ENV TOOL_ARGS apt-get -o Debug::pkgProblemResolver=yes --no-install-recommends --yes
+RUN mk-build-deps --install --tool="$TOOL_ARGS" debian/control
+
+CMD ./debian/build-deb.sh
