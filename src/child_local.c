@@ -44,7 +44,7 @@ struct sockaddr ad_target;
 char            target_ip[MAXIPSTRLEN];
 uint16_t        target_port;
 
-char* lease_file;
+//char* lease_file;
 char*           ctcp_port;
 clictcp_sock*   csk;
 
