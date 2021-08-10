@@ -169,7 +169,7 @@ $(BINDIR)/nftpServer: $(OBJDIR)/nftpServer.o $(OBJDIR)/srvctcp.o $(OBJDIR)/libUt
 $(BINDIR)/nftpClient: $(OBJDIR)/nftpClient.o $(OBJDIR)/clictcp.o $(OBJDIR)/libUtil.a .buildmode Makefile
 	$(ECHO) "linking $@"
 	$(MKDIR) -p $(dir $@)
-	$(CC) -o $@ $(OBJDIR)/nftpClient.o $(OBJDIR)/clictcp.o $(OBJDIR)/libUtil.a $(LDFLAGS) 
+	$(CC) -v -o $@ $(OBJDIR)/nftpClient.o $(OBJDIR)/clictcp.o $(OBJDIR)/libUtil.a $(LDFLAGS) 
 
 .PHONY: proxy
 proxy: $(BINDIR)/proxy_local $(BINDIR)/proxy_remote

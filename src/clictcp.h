@@ -29,7 +29,7 @@ typedef enum {SYN_SENT=0, SYN_ACK_RECV, ESTABLISHED, FIN_SENT, FIN_ACK_RECV, FIN
 #define TIMEOUT 5000
 #define POLL_TO_FLG -7
 
-FILE *rcv_file;
+extern FILE *rcv_file;
 
 typedef struct{
   //---------------- CTCP PARAMETERS ------------------//

@@ -1,0 +1,12 @@
+FROM debian:bullseye
+
+RUN apt-get update
+RUN apt-get update --fix-missing
+RUN apt-get install -y devscripts build-essential clang
+
+COPY . /ctcp
+WORKDIR /ctcp
+
+RUN make nftp
+
+CMD ./debian/build-deb.sh

@@ -70,7 +70,7 @@ main(int argc, char** argv){
       
       char dst_file_name[100] = "Recvd";
       strcat(dst_file_name, file_name);
-      rcv_file = fopen(dst_file_name,  "wb");
+      FILE *rcv_file = fopen(dst_file_name,  "wb");
 
       uint32_t f_buf_size = NUM_BLOCKS*BLOCK_SIZE*PAYLOAD_SIZE;
       uint32_t bytes_read;
